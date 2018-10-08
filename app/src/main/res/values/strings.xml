@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">BMark</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string-array name="minimizer">
+        <item>Lexicographic</item>
+        <item>Frequency</item>
+    </string-array>
+
+    <string-array name="repartition">
+        <item>Unordered</item>
+        <item>Ordered</item>
+    </string-array>
+    <string name="title_activity_dskrunning">DSKRunning</string>
+    <string name="title_activity_results">ResultsActivity</string>
+
+</resources>
