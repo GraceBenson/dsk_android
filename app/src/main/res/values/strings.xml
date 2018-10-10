@@ -14,4 +14,17 @@
     <string name="title_activity_dskrunning">DSKRunning</string>
     <string name="title_activity_results">ResultsActivity</string>
 
+
+    <string name="menu_search">Search</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_navigation">Navigation</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">DSK</string>
+    <string name="title_dashboard">VARI</string>
+    <string name="title_notifications">Kraken</string>
+    <string name = "title_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

@@ -3,16 +3,13 @@ package mo.bioinf.bmark;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity_deprecated extends AppCompatActivity {
 
     private int minimizer2int(String input)
     {
@@ -49,7 +46,7 @@ public class SettingsActivity extends AppCompatActivity {
         /*******************************/
 
 
-        DSK_Parcel parcel = getIntent().getParcelableExtra("parcel");
+        DSK_Options parcel = getIntent().getParcelableExtra("parcel");
 
 
 
@@ -62,7 +59,7 @@ public class SettingsActivity extends AppCompatActivity {
         /****************************************************/
 
 
-        /*** send settings information back to MainActivity ***/
+        /*** send settings information back to MainActivity_deprecated ***/
         done_button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 int kmer = Integer.parseInt(num_kmer.getText().toString());
@@ -71,11 +68,16 @@ public class SettingsActivity extends AppCompatActivity {
                 String minimizerStr = minimizer_spinner.getSelectedItem().toString();
                 String repartitionStr = repartition_spinner.getSelectedItem().toString();
 
-                DSK_Parcel returnParcel = new DSK_Parcel(kmer,memory,disk,repartition2int(repartitionStr),minimizer2int(minimizerStr));
+                //DSK_Options returnParcel = new DSK_Options(kmer,memory,disk,repartition2int(repartitionStr),minimizer2int(minimizerStr));
+                DSK_Options.setKmer(kmer);
+                DSK_Options.setMemory(memory);
+                DSK_Options.setDisk(disk);
+                DSK_Options.setMinimizer_type(minimizer2int(minimizerStr));
+                DSK_Options.setRepartition_type(repartition2int(repartitionStr));
 
                 Intent result = new Intent();
 
-                result.putExtra("returnParcel",returnParcel);
+                //result.putExtra("returnParcel",returnParcel);
                 setResult(Activity.RESULT_OK, result);
                 finish();
             }

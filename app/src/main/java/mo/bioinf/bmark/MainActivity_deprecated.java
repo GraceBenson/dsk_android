@@ -1,13 +1,9 @@
 package mo.bioinf.bmark;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,34 +17,22 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.content.Context;
-import android.widget.ViewFlipper;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
+public class MainActivity_deprecated extends AppCompatActivity {
 
-
-
-public class MainActivity extends AppCompatActivity {
-
-    private DSK_Parcel parcel = new DSK_Parcel();
+    //private DSK_Options parcel = new DSK_Options();
 
 
 
     public void checkForSolids(String filename, String base_path){
         final Button delete_button = (Button) findViewById(R.id.delete_button);
 
-        String pathStr = parcel.getDevicePath() + "/" + parcel.getFilename() + "_gatb";
+        String pathStr = DSK_Options.getDevicePath() + "/" + DSK_Options.getFilename() + "_gatb";
 
         File file = new File(pathStr);
 
@@ -70,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
                         "memory: " + memory + "\n" +
                         " disk: " + disk + "\n" +
                         "path: " + path + "\n" +
-                        "repartition type: " + parcel.repartition2string() + "\n" +
-                        "minimizer type: " + parcel.minimizer2string() + "\n";
+                        "repartition type: " + DSK_Options.repartition2string() + "\n" +
+                        "minimizer type: " + DSK_Options.minimizer2string() + "\n";
         tv.setText(text);
     }
 
@@ -96,17 +80,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(data != null){
-            DSK_Parcel returnParcel = data.getParcelableExtra("returnParcel");
-
-            returnParcel.setFullPath(parcel.getFullPath());
-            returnParcel.setFilename(parcel.getFilename());
-            returnParcel.setDevicePath(parcel.getDevicePath());
-            parcel = returnParcel;
 
 
-            final TextView tv = (TextView) findViewById(R.id.sample_text);
-            updateTV(tv, parcel.getKmer(),parcel.getMemory(), parcel.getDisk(),parcel.getFullPath(),
-                    parcel.getRepartition_type(), parcel.getMinimizer_type());
+
+            //final TextView tv = (TextView) findViewById(R.id.sample_text);
+//            updateTV(tv, DSK_Options.getKmer(),DSK_Options.getMemory(), DSK_Options.getDisk(),DSK_Options.getFullPath(),
+//                    DSK_Options.getRepartition_type(), DSK_Options.getMinimizer_type());
         }
 
 
@@ -119,10 +98,10 @@ public class MainActivity extends AppCompatActivity {
         final Context context = this;
 
         /*** instances of ui widgets ***/
-        final TextView tv = (TextView) findViewById(R.id.sample_text);
+        //final TextView tv = (TextView) findViewById(R.id.sample_text);
         final Button run = (Button) findViewById(R.id.run_button);
         final Spinner dropdown = (Spinner) findViewById(R.id.fastq_files);
-        final ImageButton settings_button = (ImageButton) findViewById(R.id.settings_button);
+        //final ImageButton settings_button = (ImageButton) findViewById(R.id.settings_button);
         final Button delete_button = (Button) findViewById(R.id.delete_button);
         /*******************************/
 
@@ -130,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
         run.setEnabled(false); // enabled later when the file path is verified
 
         final String base_path = context.getFilesDir().getAbsolutePath().toString() + "/fastq/"; // this phone's working directory
-        parcel.setDevicePath(context.getFilesDir().getAbsolutePath().toString());
-        parcel.setFullPath(base_path);
+        DSK_Options.setDevicePath(context.getFilesDir().getAbsolutePath().toString());
+        DSK_Options.setFullPath(base_path);
 
         populateDropdown(context, dropdown, base_path); // fills the dropdown with the files in the fastq folder
 
@@ -147,16 +126,16 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
                 String selectedItem = parent.getItemAtPosition(position).toString();
-                parcel.setFilename(selectedItem);
-                parcel.setFullPath(base_path  + selectedItem);
-                updateTV(tv, parcel.getKmer(),parcel.getMemory(), parcel.getDisk(),parcel.getFullPath(),
-                        parcel.getRepartition_type(), parcel.getMinimizer_type());
+                DSK_Options.setFilename(selectedItem);
+                DSK_Options.setFullPath(base_path  + selectedItem);
+//                updateTV(tv, DSK_Options.getKmer(),DSK_Options.getMemory(), DSK_Options.getDisk(),DSK_Options.getFullPath(),
+//                        DSK_Options.getRepartition_type(), DSK_Options.getMinimizer_type());
 
 
                 checkForSolids(selectedItem,base_path);
                 /*makes sure that if we press the run button the app won't crash due to a file permission error*/
                 checkPermission();
-                if (tryOpenFile(context,parcel.getFullPath()) && isExternalStorageReadable() && isExternalStorageWritable()) {
+                if (tryOpenFile(context,DSK_Options.getFullPath()) && isExternalStorageReadable() && isExternalStorageWritable()) {
                     run.setEnabled(true);
                 }
 
@@ -169,35 +148,35 @@ public class MainActivity extends AppCompatActivity {
 
 
         /*** open settings activity ***/
-        settings_button.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-
-                Intent myIntent = new Intent(getBaseContext(), SettingsActivity.class);
-                myIntent.putExtra("parcel",parcel);
-
-                MainActivity.this.startActivityForResult(myIntent,1);
-
-
-
-            }
-        });
-        /***********************************/
+//        settings_button.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View v){
+//
+//                Intent myIntent = new Intent(getBaseContext(), SettingsActivity_deprecated.class);
+//                //myIntent.putExtra("parcel",DSK_Options);
+//
+//                MainActivity_deprecated.this.startActivityForResult(myIntent,1);
+//
+//
+//
+//            }
+//        });
+//        /***********************************/
 
         /*** run DSK ***/
         run.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                File solids_folder = new File(parcel.getDevicePath() + "/" + parcel.getFilename() + "_gatb");
+                File solids_folder = new File(DSK_Options.getDevicePath() + "/" + DSK_Options.getFilename() + "_gatb");
                 if(solids_folder.exists())
                 {
-                    Intent results_intent = new Intent(getBaseContext(),ResultsActivity.class);
+                    Intent results_intent = new Intent(getBaseContext(),ResultsActivity_deprecated.class);
                     results_intent.putExtra("runtime", "already run");
-                    results_intent.putExtra("filename", parcel.getFilename());
-                    MainActivity.this.startActivity(results_intent);
+                    results_intent.putExtra("filename", DSK_Options.getFilename());
+                    MainActivity_deprecated.this.startActivity(results_intent);
                 }else{
-                    Intent dskIntent = new Intent(getBaseContext(),DSKRunning.class);
-                    dskIntent.putExtra("parcel",parcel);
+                    Intent dskIntent = new Intent(getBaseContext(),DSKRunning_deprecated.class);
+                    //dskIntent.putExtra("parcel",DSK_Options);
 
-                    MainActivity.this.startActivity(dskIntent);
+                    MainActivity_deprecated.this.startActivity(dskIntent);
                 }
 
 
@@ -211,8 +190,8 @@ public class MainActivity extends AppCompatActivity {
         delete_button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
-                String filename = parcel.getFilename();
-                String device_path = parcel.getDevicePath();
+                String filename = DSK_Options.getFilename();
+                String device_path = DSK_Options.getDevicePath();
                 String path = device_path + "/" + filename + "_gatb";
 
                 File folder = new File(path);
